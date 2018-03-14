@@ -24,3 +24,6 @@
 	path = ps-lite
 	url = https://github.com/lexuszhi1990/ps-lite.git
 	branch = master
+[submodule "nnvm"]
+	path = nnvm
+	url = https://github.com/dmlc/nnvm
