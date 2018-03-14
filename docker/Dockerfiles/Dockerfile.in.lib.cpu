@@ -5,6 +5,6 @@ FROM ubuntu:14.04
 COPY install/cpp.sh install/
 RUN install/cpp.sh
 
-RUN git clone --recursive https://github.com/dmlc/mxnet && cd mxnet && \
+RUN git clone --recursive https://github.com/lexuszhi1990/mxnet -b master && cd mxnet && \
     make -j$(nproc) && \
     rm -r build

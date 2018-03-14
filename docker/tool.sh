@@ -30,6 +30,7 @@ function show_usage() {
     echo "            commit needs logined in docker hub"
     echo "   LANGUAGE: the language binding to buld, e.g. python, r-lang, julia, scala or perl"
     echo "   DEVICE: targed device, e.g. cpu, or gpu"
+    echo "   VERSION: targed version, e.g. 1.1.0, default is 'latest'"
     echo ""
 }
 
@@ -44,6 +45,12 @@ LANGUAGE=$( echo "$1" | tr '[:upper:]' '[:lower:]' )
 shift 1
 DEVICE=$( echo "$1" | tr '[:upper:]' '[:lower:]' )
 shift 1
+VERSION=$( echo "$1" | tr '[:upper:]' '[:lower:]' )
+shift 1
+
+if [[ "${VERSION}" == "" ]]; then
+    VERSION = "latest"
+fi
 
 DOCKERFILE_LIB="${SCRIPT_DIR}/Dockerfiles/Dockerfile.in.lib.${DEVICE}"
 if [ ! -e ${DOCKERFILE_LIB} ]; then
@@ -65,11 +72,13 @@ else
     DOCKER_BINARY="docker"
 fi
 
-DOCKER_TAG="mxnet/${LANGUAGE}"
+DOCKER_TAG="mxnet"
 if [ "${DEVICE}" != 'cpu' ]; then
-    DOCKER_TAG="${DOCKER_TAG}:${DEVICE}"
+    DOCKER_TAG="${DOCKER_TAG}-cu80"
 fi
-DOCKERFILE="Dockerfile.${LANGUAGE}.${DEVICE}"
+DOCKER_TAG="${DOCKER_TAG}/${LANGUAGE}:${VERSION}"
+
+DOCKERFILE="Dockerfile.${LANGUAGE}.${DEVICE}.${VERSION}"
 
 # print arguments
 echo "DOCKER_BINARY: ${DOCKER_BINARY}"
