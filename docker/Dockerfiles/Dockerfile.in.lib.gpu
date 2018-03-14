@@ -2,6 +2,7 @@
 # dockerfile to build libmxnet.so on GPU
 FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
 
+RUN add install/sources-16.04.list /etc/apt/sources.list
 COPY install/cpp.sh install/
 RUN install/cpp.sh
 
