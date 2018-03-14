@@ -2,10 +2,19 @@
 # dockerfile to build libmxnet.so on GPU
 FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
 
-RUN add install/sources-16.04.list /etc/apt/sources.list
+COPY install/sources-16.04.list install/
+RUN rm /etc/apt/sources.list && \
+    cp install/sources-16.04.list /etc/apt/sources.list && \
+    rm -r /etc/apt/sources.list.d && \
+    rm -r /var/lib/apt/lists/* && \
+    apt-get update
+
+COPY install/pip.sh install/
+RUN install/pip.sh
+
 COPY install/cpp.sh install/
 RUN install/cpp.sh
 
 ENV BUILD_OPTS "USE_CUDA=1 USE_CUDA_PATH=/usr/local/cuda USE_CUDNN=1"
-RUN git clone --recursive git@code.aliyun.com:85343435/mxnet-clone.git  -b master && cd mxnet && \
+RUN git clone --recursive https://code.aliyun.com/85343435/mxnet-clone.git -b master mxnet && cd mxnet && \
     make -j$(nproc) $BUILD_OPTS
