@@ -97,7 +97,7 @@ if [[ "${COMMAND}" == "build" ]]; then
         CMD+="CLASSPATH=\${CLASSPATH}:\`ls /mxnet/scala-package/assembly/linux-x86_64-*/target/*.jar | paste -sd \":\"\` "
     fi
     echo "CMD ${CMD} bash" >>${DOCKERFILE}
-    ${DOCKER_BINARY} build --network=host -t ${DOCKER_TAG} -f ${DOCKERFILE} .
+    ${DOCKER_BINARY} build --network=host --no-cache  -t ${DOCKER_TAG} -f ${DOCKERFILE} .
 elif [[ "${COMMAND}" == "push" ]]; then
     ${DOCKER_BINARY} push ${DOCKER_TAG}
 else
