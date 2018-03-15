@@ -19,6 +19,7 @@
 
 # install libraries for mxnet's python package on ubuntu
 
+apt-get install software-properties-common
 add-apt-repository ppa:jonathonf/python-3.6
 apt-get update && apt-get install -y python-dev python3-dev python3.6
 
