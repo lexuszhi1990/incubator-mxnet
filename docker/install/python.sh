@@ -21,11 +21,12 @@
 
 apt-get install -y software-properties-common
 add-apt-repository -y ppa:jonathonf/python-3.6
-apt-get update && apt-get install -y python-dev python3-dev python3.6
+apt-get update && apt-get install -y python-dev python3-dev python3.6 graphviz
 
 # the version of the pip shipped with ubuntu may be too lower, install a recent version here
 cd /tmp && wget https://bootstrap.pypa.io/get-pip.py && python3.6 get-pip.py && python3 get-pip.py && python2 get-pip.py
 
-pip2 install nose pylint numpy nose-timer requests Pillow
-pip3.5 install nose pylint numpy nose-timer requests Pillow
-pip3.6 install nose pylint numpy nose-timer requests Pillow
+pip2 install nose pylint numpy nose-timer requests Pillow graphviz
+pip3.5 install nose pylint numpy nose-timer requests Pillow graphviz
+pip3.6 install nose pylint numpy nose-timer requests Pillow graphviz
+

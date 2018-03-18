@@ -14,6 +14,6 @@ RUN install/pip.sh
 COPY install/cpp.sh install/
 RUN install/cpp.sh
 
-ENV BUILD_OPTS "USE_CUDA=1 USE_CUDA_PATH=/usr/local/cuda USE_CUDNN=1"
+ENV BUILD_OPTS "USE_CUDA=1 USE_CUDA_PATH=/usr/local/cuda USE_CUDNN=1 USE_DIST_KVSTORE=1"
 RUN git clone --recursive https://code.aliyun.com/85343435/mxnet-clone.git -b v1.2.0-dev mxnet && cd mxnet && \
     make -j$(nproc) $BUILD_OPTS

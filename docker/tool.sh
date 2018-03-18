@@ -74,7 +74,7 @@ fi
 
 DOCKER_TAG="mxnet"
 if [ "${DEVICE}" != 'cpu' ]; then
-    DOCKER_TAG="${DOCKER_TAG}-cu80"
+    DOCKER_TAG="${DOCKER_TAG}-cu90"
 fi
 DOCKER_TAG="${DOCKER_TAG}/${LANGUAGE}:${VERSION}"
 
