@@ -9,8 +9,8 @@
 
 #include <vector>
 #include <utility>
-#include "../mshadow_op.h"
-#include "../tensor/init_op.h"
+#include "mshadow_op.h"
+#include "tensor/init_op.h"
 
 
 namespace mxnet {
