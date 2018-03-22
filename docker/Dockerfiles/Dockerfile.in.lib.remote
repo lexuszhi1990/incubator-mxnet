@@ -1,3 +1,2 @@
-RUN     echo "build from aliyun mirrors\n" \
-        git clone --recursive https://code.aliyun.com/85343435/mxnet-clone.git -b v1.2.0-dev mxnet && \
-        cd mxnet && make -j$(nproc) $BUILD_OPTS
+RUN     git clone --recursive https://code.aliyun.com/85343435/mxnet-clone.git -b v1.2.0-roialign /mxnet && \
+        cd /mxnet && make -j$(nproc) $BUILD_OPTS
