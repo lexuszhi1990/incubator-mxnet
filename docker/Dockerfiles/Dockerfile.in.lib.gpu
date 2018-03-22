@@ -8,12 +8,10 @@ FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
 #     rm -r /etc/apt/sources.list.d && \
 #     apt-get update
 
-COPY install/pip.sh install/
+COPY docker/install/pip.sh install/
 RUN install/pip.sh
 
-COPY install/cpp.sh install/
+COPY docker/install/cpp.sh install/
 RUN install/cpp.sh
 
 ENV BUILD_OPTS "USE_CUDA=1 USE_CUDA_PATH=/usr/local/cuda USE_CUDNN=1 USE_DIST_KVSTORE=1"
-RUN git clone --recursive https://code.aliyun.com/85343435/mxnet-clone.git -b v1.2.0-dev mxnet && cd mxnet && \
-    make -j$(nproc) $BUILD_OPTS

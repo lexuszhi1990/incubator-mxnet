@@ -1,0 +1,2 @@
+COPY    .   /mxnet
+RUN     echo "build from local\n" && cd /mxnet && make -j$(nproc) $BUILD_OPTS

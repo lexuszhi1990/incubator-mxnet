@@ -19,9 +19,11 @@
 
 #
 # Script to build, test and push a docker container
+# example:
+# bash ./tool.sh build python gpu 1.2.0-roialign local
 #
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 function show_usage() {
     echo ""
     echo "Usage: $(basename $0) COMMAND LANGUAGE DEVICE"
@@ -31,6 +33,7 @@ function show_usage() {
     echo "   LANGUAGE: the language binding to buld, e.g. python, r-lang, julia, scala or perl"
     echo "   DEVICE: targed device, e.g. cpu, or gpu"
     echo "   VERSION: targed version, e.g. 1.1.0, default is 'latest'"
+    echo "   SOURCE: code source, local or remote"
     echo ""
 }
 
@@ -47,14 +50,27 @@ DEVICE=$( echo "$1" | tr '[:upper:]' '[:lower:]' )
 shift 1
 VERSION=$( echo "$1" | tr '[:upper:]' '[:lower:]' )
 shift 1
+SOURCE=$( echo "$1" | tr '[:upper:]' '[:lower:]' )
+shift 1
 
 if [[ "${VERSION}" == "" ]]; then
     VERSION = "latest"
 fi
 
+if [[ "${SOURCE}" == "" ]]; then
+    SOURCE = "local"
+fi
+
 DOCKERFILE_LIB="${SCRIPT_DIR}/Dockerfiles/Dockerfile.in.lib.${DEVICE}"
 if [ ! -e ${DOCKERFILE_LIB} ]; then
     echo "Error DEVICE=${DEVICE}, failed to find ${DOCKERFILE_LIB}"
+    show_usage
+    exit 1
+fi
+
+DOCKERFILE_CODE_SOURCE="${SCRIPT_DIR}/Dockerfiles/Dockerfile.in.lib.${SOURCE}"
+if [ ! -e ${DOCKERFILE_CODE_SOURCE} ]; then
+    echo "Error DEVICE=${DEVICE}, failed to find ${DOCKERFILE_CODE_SOURCE}"
     show_usage
     exit 1
 fi
@@ -88,16 +104,17 @@ echo "DOCKER_TAG: ${DOCKER_TAG}"
 if [[ "${COMMAND}" == "build" ]]; then
     rm -rf ${DOCKERFILE}
     cp ${DOCKERFILE_LIB} ${DOCKERFILE}
+    cat ${DOCKERFILE_CODE_SOURCE} >>${DOCKERFILE}
     cat ${DOCKERFILE_LANG} >>${DOCKERFILE}
+
     # To remove the following error caused by opencv
     #    libdc1394 error: Failed to initialize libdc1394"
     CMD="sh -c 'ln -s /dev/null /dev/raw1394';"
-    # setup scala classpath
-    if [[ "${LANGUAGE}" == "scala" ]]; then
-        CMD+="CLASSPATH=\${CLASSPATH}:\`ls /mxnet/scala-package/assembly/linux-x86_64-*/target/*.jar | paste -sd \":\"\` "
-    fi
     echo "CMD ${CMD} bash" >>${DOCKERFILE}
-    ${DOCKER_BINARY} build --rm --network=host --no-cache  -t ${DOCKER_TAG} -f ${DOCKERFILE} .
+
+    # ${DOCKER_BINARY} build --rm --network=host --no-cache  -t ${DOCKER_TAG} -f ${DOCKERFILE} .
+    ${DOCKER_BINARY} build --network=host -t ${DOCKER_TAG} -f ${DOCKERFILE} .
+
 elif [[ "${COMMAND}" == "push" ]]; then
     ${DOCKER_BINARY} push ${DOCKER_TAG}
 else
