@@ -1,6 +1,6 @@
 # -*- mode: dockerfile -*-
-# dockerfile to build libmxnet.so on CPU
-FROM ubuntu:16.04
+# dockerfile to build libmxnet.so on GPU
+FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
 
 # COPY install/sources-16.04.list install/
 # RUN rm /etc/apt/sources.list && \
@@ -15,6 +15,3 @@ COPY install/cpp.sh install/
 RUN install/cpp.sh
 
 ENV BUILD_OPTS "USE_DIST_KVSTORE=1"
-RUN git clone --recursive https://code.aliyun.com/85343435/mxnet-clone.git -b v1.2.0-dev mxnet && cd mxnet && \
-    make -j$(nproc) $BUILD_OPTS && \
-    rm -r build
