@@ -114,6 +114,7 @@ if [[ "${COMMAND}" == "build" ]]; then
 
     # ${DOCKER_BINARY} build --rm --network=host --no-cache  -t ${DOCKER_TAG} -f ${DOCKERFILE} .
     ${DOCKER_BINARY} build --network=host -t ${DOCKER_TAG} -f ${DOCKERFILE} .
+    rm ${DOCKERFILE}
 
 elif [[ "${COMMAND}" == "push" ]]; then
     ${DOCKER_BINARY} push ${DOCKER_TAG}
