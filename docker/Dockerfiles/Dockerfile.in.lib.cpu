@@ -1,5 +1,5 @@
 # -*- mode: dockerfile -*-
-# dockerfile to build libmxnet.so on GPU
+# dockerfile to build libmxnet.so
 FROM ubuntu:18.04
 
 # COPY install/sources-16.04.list install/
@@ -8,10 +8,10 @@ FROM ubuntu:18.04
 #     rm -r /etc/apt/sources.list.d && \
 #     apt-get update
 
-COPY install/pip.sh install/
+COPY docker/install/pip.sh install/
 RUN install/pip.sh
 
-COPY install/cpp.sh install/
+COPY docker/install/cpp.sh install/
 RUN install/cpp.sh
 
 ENV BUILD_OPTS "USE_DIST_KVSTORE=1"

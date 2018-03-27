@@ -19,8 +19,13 @@
 
 # libraries for building mxnet c++ core on ubuntu
 
-apt-get update && apt-get install -y \
+apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     build-essential git libatlas-base-dev libopencv-dev python-opencv \
     libcurl4-openssl-dev libgtest-dev cmake wget unzip
+
+# https://stackoverflow.com/questions/8671308/non-interactive-method-for-dpkg-reconfigure-tzdata
+echo "Asia/Hong_Kong" > /etc/timezone
+dpkg-reconfigure -f noninteractive tzdata
 
 cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib
