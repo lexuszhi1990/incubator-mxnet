@@ -21,7 +21,8 @@
 
 apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    build-essential git libatlas-base-dev libopencv-dev python-opencv \
+    build-essential git libatlas-base-dev libopencv-dev liblapack-dev \
+    python-opencv python3-opencv \
     libcurl4-openssl-dev libgtest-dev cmake wget unzip
 
 # https://stackoverflow.com/questions/8671308/non-interactive-method-for-dpkg-reconfigure-tzdata
